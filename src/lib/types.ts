@@ -51,4 +51,5 @@ export interface ChatResponse {
   execution_error?: string | null;
   error?: string | null;
   timestamp: string;
+  conversation_id?: string;
 }

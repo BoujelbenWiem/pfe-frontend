@@ -25,7 +25,7 @@ export default function ChatInput({ onSend, loading }: Props) {
   };
 
   return (
-    <div className="flex items-end gap-2 border border-gray-300 dark:border-gray-600 rounded-2xl px-3 py-2 bg-white dark:bg-gray-800 shadow-sm">
+    <div className="flex items-center gap-2 border border-gray-300 dark:border-gray-600 rounded-2xl px-3 py-2 bg-white dark:bg-gray-800 shadow-sm">
       <textarea
         ref={textareaRef}
         value={value}

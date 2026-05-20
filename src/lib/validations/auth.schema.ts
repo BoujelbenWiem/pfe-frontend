@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const ROLES = ["ADMIN", "STORE_MANAGER", "MARKETING", "CRM", "ACHATS"] as const;
+const ROLES = ["STORE_MANAGER", "MARKETING", "CRM", "ACHATS"] as const;
 
 const STORES = [
   "BV000", "BV001", "BV002", "BV003", "BV004", "BV006", "BV008", "BV009", "BV010",

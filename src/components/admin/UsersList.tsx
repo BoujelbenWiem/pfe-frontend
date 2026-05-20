@@ -216,7 +216,7 @@ export default function UsersList() {
               <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <td className="px-6 py-4">
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-primary to-primary/70 flex items-center justify-center text-white font-semibold">
+                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gray-400 flex items-center justify-center text-white font-semibold">
                       {user.username[0].toUpperCase()}
                     </div>
                     <div className="ml-4">

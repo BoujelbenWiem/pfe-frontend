@@ -30,7 +30,7 @@ const ScrollToTop = () => {
                 isVisible
                     ? 'opacity-100 translate-y-0'
                     : 'opacity-0 translate-y-12 pointer-events-none'
-            } bg-primary/90 hover:bg-primary`}
+            } bg-blue-600 hover:bg-blue-700`}
             aria-label="Scroll to top"
         >
             <ArrowUp size={20} color={'white'}/>

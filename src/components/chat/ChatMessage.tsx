@@ -82,7 +82,8 @@ export default function ChatMessage({ role, content, response }: Props) {
           <div className="relative">
             <button
               onClick={() => exportToCSV((fr as FormattedResponseTable).data, "export")}
-              className="absolute top-0 right-0 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              className="absolute top-0 right-0 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors z-20"
+              style={{ zIndex: 20 }}
               title="Exporter en CSV"
             >
               <Download size={18} />

@@ -4,10 +4,9 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/hooks/useAuth";
 import UserStats from "@/components/admin/UserStats";
 import UsersList from "@/components/admin/UsersList";
-import Button from "@/components/ui/Button";
 
 export default function DashboardPage() {
-  const { user, loading, logout } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) {
     return (
@@ -30,12 +29,7 @@ export default function DashboardPage() {
               Welcome back, {user?.username}
             </p>
           </div>
-          <Button
-            onClick={logout}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
-          >
-            Logout
-          </Button>
+          
         </div>
 
         {/* Stats */}

@@ -34,6 +34,14 @@ const Icon = ({ name, size = 20, className = "" }: { name: string; size?: number
         <path d="M6 18L18 6M6 6l12 12" />
       </svg>
     ),
+    dashboard: (
+      <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="3" y="3" width="7" height="7" />
+        <rect x="14" y="3" width="7" height="7" />
+        <rect x="14" y="14" width="7" height="7" />
+        <rect x="3" y="14" width="7" height="7" />
+      </svg>
+    ),
     logOut: (
       <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -56,11 +64,20 @@ const Icon = ({ name, size = 20, className = "" }: { name: string; size?: number
 };
 
 // Simple navigation links for your chatbot app
-const navLinks = [
-  { href: "/", label: "Home", icon: "home" },
-  { href: "/chat", label: "Chat", icon: "message" },
-  { href: "/profile", label: "Profile", icon: "user" },
-];
+const getNavLinks = (isAdmin: boolean, isAuthenticated: boolean) => {
+  if (!isAuthenticated) return [];
+  const baseLinks = [
+    { href: "/chat", label: "Chat", icon: "message" },
+    { href: "/profile", label: "Profile", icon: "user" },
+  ];
+  if (isAdmin) {
+    return [
+      { href: "/dashboard", label: "Dashboard", icon: "dashboard" },
+      ...baseLinks,
+    ];
+  }
+  return baseLinks;
+};
 
 interface NavbarProps {
   className?: string;
@@ -77,6 +94,9 @@ export default function Navbar({ className = "" }: NavbarProps) {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const isAdmin = user?.role === "ADMIN";
+  const navLinks = getNavLinks(isAdmin, isAuthenticated);
 
   const handleLogout = async () => {
     await logout();
@@ -99,7 +119,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
         borderColor: isDarkMode ? "rgba(75, 85, 99, 0.5)" : "rgba(229, 231, 235, 0.5)",
       }}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link
@@ -174,7 +194,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
                 </Link>
                 <Link
                   href="/register"
-                  className="px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary/90 transition-all shadow-md hover:shadow-lg"
+                  className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
                 >
                   Sign Up
                 </Link>

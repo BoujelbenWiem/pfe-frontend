@@ -26,7 +26,7 @@ export default function NotFound() {
                                 Return Home
                             </Button>
                         </Link>
-                        <Link href="/contact">
+                        <Link href="https://www.bureau-vallee.re/fr_RE/nous-contacter">
                             <Button variant="outline" size="lg">
                                 Contact Support
                             </Button>

@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import ChatInput from "@/components/chat/ChatInput";
 import ChatMessage from "@/components/chat/ChatMessage";
 import ChatSidebar from "@/components/chat/ChatSidebar";
 import { sendMessage } from "@/services/chat.service";
+import { getConversation } from "@/services/chatHistory.service";
 import { ChatResponse } from "@/lib/types";
 
 interface Message {
@@ -16,8 +17,11 @@ interface Message {
   response?: ChatResponse;
 }
 
-export default function ChatPage() {
+export default function ChatConversationPage() {
   const router = useRouter();
+  const params = useParams();
+  const conversationId = typeof params.id === "string" ? params.id : Array.isArray(params.id) ? params.id[0] : null;
+  
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -27,13 +31,40 @@ export default function ChatPage() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Load conversation on mount or when conversationId changes
+  useEffect(() => {
+    if (!conversationId) {
+      setMessages([]);
+      return;
+    }
+
+    (async () => {
+      try {
+        const detail = await getConversation(conversationId);
+        const loaded: Message[] = detail.messages.map((msg) => ({
+          id: msg.id || Math.random().toString(),
+          role: msg.role,
+          content: msg.role === "user" ? msg.content : undefined,
+          response: msg.role === "assistant" ? {
+            formatted_response: msg.formatted_response || { type: "text", content: msg.content || "" },
+            sql_query: msg.sql_query || null,
+            timestamp: msg.created_at,
+          } : undefined,
+        }));
+        setMessages(loaded);
+      } catch {
+        setMessages([]);
+      }
+    })();
+  }, [conversationId]);
+
   const handleSelectConversation = useCallback((id: string) => {
+    if (id === conversationId) return;
     router.push(`/chat/${id}`);
-  }, [router]);
+  }, [router, conversationId]);
 
   const handleNewConversation = useCallback(() => {
     router.push("/chat");
-    setMessages([]);
   }, [router]);
 
   const handleSend = async (question: string) => {
@@ -46,12 +77,7 @@ export default function ChatPage() {
     setLoading(true);
 
     try {
-      const response = await sendMessage(question, null);
-      // If backend returns a conversation_id (new conversation created), navigate to it
-      if (response.conversation_id) {
-        router.push(`/chat/${response.conversation_id}`);
-        setRefreshTrigger((prev) => prev + 1);
-      }
+      const response = await sendMessage(question, conversationId);
       const assistantMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
@@ -78,7 +104,7 @@ export default function ChatPage() {
       <div className="flex h-[calc(100vh-4rem)]">
         {/* Sidebar */}
         <ChatSidebar
-          currentConversationId={null}
+          currentConversationId={conversationId}
           onSelectConversation={handleSelectConversation}
           onNewConversation={handleNewConversation}
           refreshTrigger={refreshTrigger}
