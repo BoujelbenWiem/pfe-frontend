@@ -21,6 +21,7 @@ import {
   deleteUser,
   AdminUser,
 } from "@/services/admin.service";
+import { useLanguage } from "@/context/language/useLanguage";
 
 const roleColors = {
   ADMIN: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
@@ -39,6 +40,7 @@ const roleLabels = {
 };
 
 export default function UsersList() {
+  const {t}=useLanguage();
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -133,10 +135,10 @@ export default function UsersList() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-              User Management
+              {t("dashboard.usersList")}
             </h2>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              Total users: {totalUsers}
+              {t("dashboard.totalUsers")}: {totalUsers}
             </p>
           </div>
           
@@ -146,7 +148,7 @@ export default function UsersList() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search users..."
+                placeholder={t("dashboard.searchUsers")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
@@ -158,12 +160,12 @@ export default function UsersList() {
               onChange={(e) => setRoleFilter(e.target.value)}
               className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              <option value="">All Roles</option>
-              <option value="ADMIN">Admin</option>
-              <option value="STORE_MANAGER">Store Manager</option>
-              <option value="MARKETING">Marketing</option>
-              <option value="CRM">CRM</option>
-              <option value="ACHATS">Purchases</option>
+              <option value="">{t("dashboard.allRoles")}</option>
+              <option value="ADMIN">{t("dashboard.admin")}</option>
+              <option value="STORE_MANAGER">{t("dashboard.storeManager")}</option>
+              <option value="MARKETING">{t("dashboard.marketing")}</option>
+              <option value="CRM">{t("dashboard.crm")}</option>
+              <option value="ACHATS">{t("dashboard.purchases")}</option>
             </select>
             
             <select
@@ -171,9 +173,9 @@ export default function UsersList() {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              <option value="">All Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
+              <option value="">{t("dashboard.allStatus")}</option>
+              <option value="active">{t("dashboard.active")}</option>
+              <option value="inactive">{t("dashboard.inactive")}</option>
             </select>
           </div>
         </div>
@@ -192,22 +194,22 @@ export default function UsersList() {
           <thead className="bg-gray-50 dark:bg-gray-700/50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                User
+                {t("dashboard.user")}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Role
+                {t("dashboard.role")}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Status
+                {t("dashboard.status")}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Joined
+                {t("dashboard.joined")}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Details
+                {t("dashboard.details")}
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Actions
+                {t("dashboard.actions")}
               </th>
             </tr>
           </thead>
@@ -244,7 +246,7 @@ export default function UsersList() {
                       ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
                       : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
                   )}>
-                    {user.is_active ? "Active" : "Inactive"}
+                    {t(user.is_active ? "dashboard.active" : "dashboard.inactive")}
                   </span>
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
@@ -255,13 +257,13 @@ export default function UsersList() {
                     {user.store_id && (
                       <div className="flex items-center gap-1">
                         <Store className="w-3 h-3" />
-                        <span>Store #{user.store_id}</span>
+                        <span>{t("dashboard.store")} #{user.store_id}</span>
                       </div>
                     )}
                     {user.department && (
                       <div className="flex items-center gap-1">
                         <Building className="w-3 h-3" />
-                        <span>{user.department}</span>
+                        <span>{t("dashboard.department")}: {user.department}</span>
                       </div>
                     )}
                   </div>
@@ -284,7 +286,7 @@ export default function UsersList() {
                             className="flex items-center w-full px-4 py-2 text-sm text-yellow-700 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
                           >
                             <Ban className="w-4 h-4 mr-2" />
-                            Deactivate
+                            {t("dashboard.deactivate")}
                           </button>
                         ) : (
                           <button
@@ -293,7 +295,7 @@ export default function UsersList() {
                             className="flex items-center w-full px-4 py-2 text-sm text-green-700 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"
                           >
                             <CheckCircle className="w-4 h-4 mr-2" />
-                            Activate
+                            {t("dashboard.activate")}
                           </button>
                         )}
                         <button
@@ -302,7 +304,7 @@ export default function UsersList() {
                           className="flex items-center w-full px-4 py-2 text-sm text-red-700 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                         >
                           <Trash2 className="w-4 h-4 mr-2" />
-                          Delete
+                          {t("dashboard.delete")}
                         </button>
                       </div>
                     </div>
@@ -353,12 +355,12 @@ export default function UsersList() {
                   ? "bg-green-100 text-green-700"
                   : "bg-red-100 text-red-700"
               )}>
-                {user.is_active ? "Active" : "Inactive"}
+                {user.is_active ? t("dashboard.active") : t("dashboard.inactive")}
               </span>
             </div>
             
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              Joined: {formatDate(user.created_at)}
+              {t("dashboard.joined")}: {formatDate(user.created_at)}
             </div>
             
             {showActions === user.id && (
@@ -372,7 +374,7 @@ export default function UsersList() {
                     className="flex-1"
                   >
                     <Ban className="w-4 h-4 mr-1" />
-                    Deactivate
+                    {t("dashboard.deactivate")}
                   </Button>
                 ) : (
                   <Button
@@ -383,7 +385,7 @@ export default function UsersList() {
                     className="flex-1"
                   >
                     <CheckCircle className="w-4 h-4 mr-1" />
-                    Activate
+                    {t("dashboard.activate")}
                   </Button>
                 )}
                 <Button
@@ -394,7 +396,7 @@ export default function UsersList() {
                   className="flex-1"
                 >
                   <Trash2 className="w-4 h-4 mr-1" />
-                  Delete
+                  {t("dashboard.delete")}
                 </Button>
               </div>
             )}

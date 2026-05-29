@@ -44,6 +44,7 @@ function exportToCSV(data: Record<string, unknown>[], filename: string) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
 
 export default function ChatMessage({ role, content, response }: Props) {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useLanguage } from "@/context/language/useLanguage";
 import { useRouter, useParams } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import ChatInput from "@/components/chat/ChatInput";
@@ -16,12 +17,12 @@ interface Message {
   content?: string;
   response?: ChatResponse;
 }
-
 export default function ChatConversationPage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const params = useParams();
   const conversationId = typeof params.id === "string" ? params.id : Array.isArray(params.id) ? params.id[0] : null;
-  
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -89,7 +90,7 @@ export default function ChatConversationPage() {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         response: {
-          error: "An error occurred. Please try again.",
+          error: t("chat.error"),
           timestamp: new Date().toISOString(),
         },
       };
@@ -142,11 +143,10 @@ export default function ChatConversationPage() {
                 <div className="text-center space-y-3">
                   <div className="text-4xl">💬</div>
                   <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300">
-                    Bureau Vallée ChatBot
+                    {t("chat.title")}
                   </h2>
                   <p className="text-gray-500 dark:text-gray-400 text-sm max-w-md">
-                    Posez vos questions sur les ventes, stocks, clients et plus encore.
-                    Je peux afficher des tableaux et graphiques.
+                    {t("chat.description")}
                   </p>
                 </div>
               </div>

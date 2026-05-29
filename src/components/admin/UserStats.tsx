@@ -12,6 +12,7 @@ import {
   ShoppingCart
 } from "lucide-react";
 import { getUserStats, UserStatsResponse } from "@/services/admin.service";
+import { useLanguage } from "@/context/language/useLanguage";
 
 const roleIcons = {
   ADMIN: Shield,
@@ -41,6 +42,7 @@ export default function UserStats() {
   const [stats, setStats] = useState<UserStatsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const {t}=useLanguage();
 
   useEffect(() => {
     getUserStats()
@@ -69,13 +71,13 @@ export default function UserStats() {
 
   const statsCards = [
     {
-      label: "Total Users",
+      label: t("dashboard.totalUsers"),
       value: stats.total,
       icon: Users,
       color: "from-gray-500 to-gray-600",
     },
     {
-      label: "Active Roles",
+      label: t("dashboard.activeRoles"),
       value: Object.keys(roleLabels).filter(r => stats[r as keyof UserStatsResponse]).length,
       icon: UserCheck,
       color: "from-green-500 to-green-600",
@@ -110,7 +112,7 @@ export default function UserStats() {
       </div>
 
       {/* Role Distribution */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      {/*<div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           User Distribution by Role
         </h3>
@@ -149,9 +151,9 @@ export default function UserStats() {
             );
           })}
         </div>
-      </div>
+      </div> */}
 
-      {/* Recent Activity (Placeholder) */}
+      {/* Recent Activity (Placeholder) 
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           Recent Activity
@@ -161,7 +163,7 @@ export default function UserStats() {
           <p>Activity tracking coming soon</p>
           <p className="text-sm mt-1">Monitor user actions and system events</p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

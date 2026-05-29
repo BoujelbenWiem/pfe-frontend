@@ -4,6 +4,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import Link from "next/link";
 import {useTheme} from "@/context/theme/useTheme";
 import {ArrowUp, ArrowUpRight, Moon, Sun} from "lucide-react";
+import {useLanguage} from "@/context/language/useLanguage";
 
 // Scroll to the top component
 const ScrollToTop = () => {
@@ -42,6 +43,7 @@ export default function Footer() {
     const {isDarkMode, toggleTheme} = useTheme();
     const currentYear = new Date().getFullYear();
     const [mounted, setMounted] = useState(false);
+    const {t}=useLanguage();
 
     useEffect(() => {
         setMounted(true);
@@ -64,7 +66,7 @@ export default function Footer() {
                                     <span className="font-semibold">Bureau Vallée Chatbot</span>
                                 </div>
                                 <p className="text-sm text-muted-foreground mb-4">
-                                    Assistant intelligent pour l&apos;analyse de données Bureau Vallée.
+                                    {t("footer.description")}
                                 </p>
                                 <a
                                     href="https://www.bureau-vallee.fr"
@@ -81,11 +83,7 @@ export default function Footer() {
                             <div>
                                 <h4 className="font-medium mb-4">Navigation</h4>
                                 <ul className="space-y-2">
-                                    <li>
-                                        <Link href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                            Accueil
-                                        </Link>
-                                    </li>
+                                    
                                     <li>
                                         <Link href="/chat" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                                             Chat
@@ -93,7 +91,7 @@ export default function Footer() {
                                     </li>
                                     <li>
                                         <Link href="/profile" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                            Profil
+                                            {t("nav.profile")}
                                         </Link>
                                     </li>
                                 </ul>
@@ -101,18 +99,14 @@ export default function Footer() {
 
                             {/* Account */}
                             <div>
-                                <h4 className="font-medium mb-4">Compte</h4>
+                                <h4 className="font-medium mb-4">{t("footer.account")}</h4>
                                 <ul className="space-y-2">
                                     <li>
                                         <Link href="/login" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                            Connexion
+                                            {t("nav.signIn")}
                                         </Link>
                                     </li>
-                                    <li>
-                                        <Link href="/register" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                            Inscription
-                                        </Link>
-                                    </li>
+                                    
                                 </ul>
                             </div>
                         </div>
@@ -123,7 +117,7 @@ export default function Footer() {
                         isDarkMode ? 'border-zinc-800' : 'border-zinc-100'
                     } flex flex-col md:flex-row justify-between items-center`}>
                         <p className="text-xs text-muted-foreground mb-4 md:mb-0">
-                            © {currentYear} Bureau Vallée. Tous droits réservés.
+                            {t("footer.copyright")}
                         </p>
 
                         <div className={`${mounted ? 'visible' : 'invisible'}`}>

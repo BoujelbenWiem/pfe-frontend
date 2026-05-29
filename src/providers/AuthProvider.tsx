@@ -4,11 +4,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import {
   login as loginService,
-  register as registerService,
   logout as logoutService,
   getCurrentUser,
 } from "@/services/auth.service";
-import { LoginPayload, RegisterPayload, User } from "@/types/auth";
+import { LoginPayload, User } from "@/types/auth";
 
 interface Props {
   children: React.ReactNode;
@@ -31,10 +30,6 @@ export default function AuthProvider({ children }: Props) {
     return user;
   }, []);
 
-  const register = useCallback(async (payload: RegisterPayload) => {
-    await registerService(payload);
-  }, []);
-
   const logout = useCallback(async () => {
     try {
       await logoutService();
@@ -49,10 +44,9 @@ export default function AuthProvider({ children }: Props) {
       loading,
       isAuthenticated: !!user,
       login,
-      register,
       logout,
     }),
-    [user, loading, login, register, logout]
+    [user, loading, login, logout]
   );
 
   return (

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { updateProfile } from "@/services/profile.service";
+import { useLanguage } from "@/context/language/useLanguage";
 
 interface ProfileInfoProps {
   user: any;
 }
 
 export default function ProfileInfo({ user }: ProfileInfoProps) {
+  const { t } = useLanguage();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [profileSaving, setProfileSaving] = useState(false);
@@ -25,9 +27,9 @@ export default function ProfileInfo({ user }: ProfileInfoProps) {
     setProfileMessage("");
     try {
       await updateProfile({ username, email });
-      setProfileMessage("Profile updated successfully");
+      setProfileMessage(t("profile.info.updateSuccess"));
     } catch {
-      setProfileMessage("Failed to update profile");
+      setProfileMessage(t("profile.info.updateFailed"));
     } finally {
       setProfileSaving(false);
     }
@@ -36,12 +38,12 @@ export default function ProfileInfo({ user }: ProfileInfoProps) {
   return (
     <section className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-        Profile Information
+        {t("profile.info.title")}
       </h2>
       <form onSubmit={handleUpdateProfile} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Username
+            {t("profile.info.username")}
           </label>
           <input
             type="text"
@@ -53,7 +55,7 @@ export default function ProfileInfo({ user }: ProfileInfoProps) {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Email
+            {t("profile.info.email")}
           </label>
           <input
             type="email"
@@ -65,7 +67,7 @@ export default function ProfileInfo({ user }: ProfileInfoProps) {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Role
+            {t("profile.info.role")}
           </label>
           <input
             type="text"
@@ -84,7 +86,7 @@ export default function ProfileInfo({ user }: ProfileInfoProps) {
           disabled={profileSaving}
           className="bg-blue-600 text-white rounded-xl px-3 py-1.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-40 transition"
         >
-          {profileSaving ? "Saving..." : "Save Changes"}
+          {profileSaving ? t("profile.info.saving") : t("profile.info.saveButton")}
         </button>
       </form>
     </section>

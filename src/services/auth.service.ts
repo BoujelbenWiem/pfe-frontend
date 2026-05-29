@@ -48,3 +48,16 @@ export const getCurrentUser = async () => {
 
   return response.data;
 };
+
+export const setupPassword = async (
+  token: string,
+  new_password: string
+): Promise<{ message: string }> => {
+
+  const response = await api.post(
+    "/auth/setup-password",
+    { token, new_password }
+  );
+
+  return response.data;
+};

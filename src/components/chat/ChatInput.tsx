@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useLanguage } from "@/context/language/useLanguage";
 
 interface Props {
   onSend: (message: string) => void;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export default function ChatInput({ onSend, loading }: Props) {
+  const { t } = useLanguage();
   const [value, setValue] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -31,7 +33,7 @@ export default function ChatInput({ onSend, loading }: Props) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Posez votre question…"
+        placeholder={t("chat.inputPlaceholder")}
         rows={1}
         disabled={loading}
         className="flex-1 resize-none text-sm outline-none max-h-24 overflow-y-auto bg-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
@@ -41,7 +43,7 @@ export default function ChatInput({ onSend, loading }: Props) {
         disabled={!value.trim() || loading}
         className="bg-blue-600 text-white rounded-xl px-3 py-1.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-40 transition flex-shrink-0"
       >
-        {loading ? "…" : "Envoyer"}
+        {loading ? "…" : t("chat.send")}
       </button>
     </div>
   );

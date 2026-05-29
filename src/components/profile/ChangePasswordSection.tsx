@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { changePassword } from "@/services/profile.service";
+import { useLanguage } from "@/context/language/useLanguage";
 
 interface ChangePasswordProps {}
 
 export default function ChangePasswordSection({}: ChangePasswordProps) {
+  const { t } = useLanguage();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -14,11 +16,11 @@ export default function ChangePasswordSection({}: ChangePasswordProps) {
     e.preventDefault();
     setPasswordMessage("");
     if (newPassword !== confirmPassword) {
-      setPasswordMessage("Passwords do not match");
+      setPasswordMessage(t("profile.changePassword.passwordMismatch"));
       return;
     }
     if (newPassword.length < 8) {
-      setPasswordMessage("Password must be at least 8 characters");
+      setPasswordMessage(t("profile.changePassword.passwordTooShort"));
       return;
     }
     setPasswordSaving(true);
@@ -27,12 +29,12 @@ export default function ChangePasswordSection({}: ChangePasswordProps) {
         old_password: oldPassword,
         new_password: newPassword,
       });
-      setPasswordMessage(res.message || "Password changed successfully");
+      setPasswordMessage(res.message || t("profile.changePassword.success"));
       setOldPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch {
-      setPasswordMessage("Failed to change password. Check your old password.");
+      setPasswordMessage(t("profile.changePassword.failed"));
     } finally {
       setPasswordSaving(false);
     }
@@ -41,12 +43,12 @@ export default function ChangePasswordSection({}: ChangePasswordProps) {
   return (
     <section className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-        Change Password
+        {t("profile.changePassword.title")}
       </h2>
       <form onSubmit={handleChangePassword} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Current Password
+            {t("profile.changePassword.currentPassword")}
           </label>
           <input
             type="password"
@@ -58,7 +60,7 @@ export default function ChangePasswordSection({}: ChangePasswordProps) {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            New Password
+            {t("profile.changePassword.newPassword")}
           </label>
           <input
             type="password"
@@ -71,7 +73,7 @@ export default function ChangePasswordSection({}: ChangePasswordProps) {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Confirm New Password
+            {t("profile.changePassword.confirmPassword")}
           </label>
           <input
             type="password"
@@ -92,7 +94,7 @@ export default function ChangePasswordSection({}: ChangePasswordProps) {
           disabled={passwordSaving}
           className="bg-blue-600 text-white rounded-xl px-3 py-1.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-40 transition"
         >
-          {passwordSaving ? "Changing..." : "Change Password"}
+          {passwordSaving ? t("profile.changePassword.changing") : t("profile.changePassword.button")}
         </button>
       </form>
     </section>

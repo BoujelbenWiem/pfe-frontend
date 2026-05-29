@@ -68,3 +68,5 @@ export async function deactivateUser(userId: number): Promise<AdminUser> {
   const { data } = await api.post(`/users/${userId}/deactivate`);
   return data;
 }
+
+

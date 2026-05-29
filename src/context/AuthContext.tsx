@@ -1,14 +1,13 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import { LoginPayload, RegisterPayload, User } from "@/types/auth";
+import { LoginPayload, User } from "@/types/auth";
 
 export interface AuthContextType {
   user: User | null;
   loading: boolean;
   isAuthenticated: boolean;
   login: (payload: LoginPayload) => Promise<User>;
-  register: (payload: RegisterPayload) => Promise<void>;
   logout: () => Promise<void>;
 }
 

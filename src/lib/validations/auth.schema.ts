@@ -36,6 +36,21 @@ export const registerSchema = z
     path: ["confirmPassword"],
   });
 
+export const setupPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, "Minimum 8 characters")
+      .regex(/[A-Z]/, "Must contain at least one uppercase letter")
+      .regex(/[0-9]/, "Must contain at least one digit"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
 export { ROLES, STORES };
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;
+export type SetupPasswordFormData = z.infer<typeof setupPasswordSchema>;

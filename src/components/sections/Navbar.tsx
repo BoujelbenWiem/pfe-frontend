@@ -2,9 +2,11 @@
 
 import { ReactElement, useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/context/theme/useTheme";
+import { useLanguage } from "@/context/language/useLanguage";
 
 // Simple icon component instead of complex Icon system
 const Icon = ({ name, size = 20, className = "" }: { name: string; size?: number; className?: string }) => {
@@ -67,12 +69,12 @@ const Icon = ({ name, size = 20, className = "" }: { name: string; size?: number
 const getNavLinks = (isAdmin: boolean, isAuthenticated: boolean) => {
   if (!isAuthenticated) return [];
   const baseLinks = [
-    { href: "/chat", label: "Chat", icon: "message" },
-    { href: "/profile", label: "Profile", icon: "user" },
+    { href: "/chat", labelKey: "nav.chat", icon: "message" },
+    { href: "/profile", labelKey: "nav.profile", icon: "user" },
   ];
   if (isAdmin) {
     return [
-      { href: "/dashboard", label: "Dashboard", icon: "dashboard" },
+      { href: "/dashboard", labelKey: "nav.dashboard", icon: "dashboard" },
       ...baseLinks,
     ];
   }
@@ -88,6 +90,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
   const router = useRouter();
   const { user, logout, isAuthenticated } = useAuth();
   const { isDarkMode, toggleTheme } = useTheme();
+  const { language, setLanguage, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -127,9 +130,22 @@ export default function Navbar({ className = "" }: NavbarProps) {
             className="flex items-center space-x-2 group"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div className="p-2 rounded-lg bg-primary flex items-center justify-center transition-transform group-hover:scale-105">
-              <span className={`text-xl font-bold ${isDarkMode ? "text-white" : "text-gray-900"}`}>BV</span>
-            </div>
+            <Image 
+              src="/logo.png" 
+              alt="BV Logo" 
+              width={40} 
+              height={40}
+              className="dark:hidden rounded-lg"
+              priority
+            />
+            <Image 
+              src="/logo-dark.png" 
+              alt="BV Logo" 
+              width={40} 
+              height={40}
+              className="hidden dark:block rounded-lg"
+              priority
+            />
             <span className={`text-xl font-bold ${isDarkMode ? "text-white" : "text-gray-900"}`}>
               ChatBot
             </span>
@@ -148,7 +164,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
                 }`}
               >
                 <Icon name={link.icon} size={18} />
-                <span>{link.label}</span>
+                <span>{t(link.labelKey)}</span>
               </Link>
             ))}
           </div>
@@ -170,19 +186,31 @@ export default function Navbar({ className = "" }: NavbarProps) {
               )}
             </button>
 
+            {/* Language Toggle */}
+            <button
+              onClick={() => setLanguage(language === "en" ? "fr" : "en")}
+              className={`px-3 py-2 rounded-full transition-all font-medium text-sm ${
+                isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-100"
+              }`}
+              aria-label="Toggle language"
+            >
+              {language === "en" ? "🇫🇷 FR" : "🇬🇧 EN"}
+            </button>
+
             {/* Auth Section - Desktop */}
             {isAuthenticated ? (
               <div className="hidden md:flex items-center space-x-3">
                 <div className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>
                   {user?.username || user?.email}
                 </div>
-                <button
-                  onClick={handleLogout}
-                  className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-all group"
-                  aria-label="Logout"
-                >
-                  <Icon name="logOut" size={20} className="text-red-500" />
-                </button>
+                  <button
+                    onClick={handleLogout}
+                    className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-all group"
+                    aria-label="Logout"
+                    title={t("nav.signOut")}
+                  >
+                    <Icon name="logOut" size={20} className="text-red-500" />
+                  </button>
               </div>
             ) : (
               <div className="hidden md:flex items-center space-x-3">
@@ -190,13 +218,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
                   href="/login"
                   className="px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
                 >
-                  Sign In
-                </Link>
-                <Link
-                  href="/register"
-                  className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
-                >
-                  Sign Up
+                  {t("nav.signIn")}
                 </Link>
               </div>
             )}
@@ -237,7 +259,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
                   }`}
                 >
                   <Icon name={link.icon} size={20} />
-                  <span className="font-medium">{link.label}</span>
+                  <span className="font-medium">{t(link.labelKey)}</span>
                 </Link>
               ))}
 
@@ -245,7 +267,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
               {isAuthenticated ? (
                 <>
                   <div className={`px-4 py-3 ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>
-                    <div className="text-sm font-medium">Signed in as</div>
+                    <div className="text-sm font-medium">{t("nav.signedInAs")}</div>
                     <div className="text-sm opacity-75">{user?.email}</div>
                   </div>
                   <button
@@ -253,7 +275,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
                     className="flex items-center space-x-3 w-full px-4 py-3 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
                   >
                     <Icon name="logOut" size={20} />
-                    <span className="font-medium">Sign Out</span>
+                    <span className="font-medium">{t("nav.signOut")}</span>
                   </button>
                 </>
               ) : (
@@ -263,14 +285,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="flex items-center justify-center w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
                   >
-                    Sign In
-                  </Link>
-                  <Link
-                    href="/register"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center justify-center w-full px-4 py-3 rounded-lg bg-primary text-white hover:bg-primary/90 transition-all shadow-md"
-                  >
-                    Sign Up
+                    {t("nav.signIn")}
                   </Link>
                 </>
               )}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useLanguage } from "@/context/language/useLanguage";
 import { useTheme } from "@/context/theme/useTheme";
 import {
   Conversation,
@@ -23,6 +24,7 @@ export default function ChatSidebar({
   onNewConversation,
   refreshTrigger,
 }: ChatSidebarProps) {
+  const { t } = useLanguage();
   const { isDarkMode } = useTheme();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
@@ -88,10 +90,10 @@ export default function ChatSidebar({
     const diffMs = now.getTime() - date.getTime();
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) return "Aujourd'hui";
-    if (diffDays === 1) return "Hier";
-    if (diffDays < 7) return `Il y a ${diffDays} jours`;
-    return date.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+    if (diffDays === 0) return t("chatSidebar.today");
+    if (diffDays === 1) return t("chatSidebar.yesterday");
+    if (diffDays < 7) return `${diffDays} ${t("chatSidebar.daysAgo")}`;
+    return date.toLocaleDateString();
   };
 
   // Group conversations by date
@@ -108,14 +110,14 @@ export default function ChatSidebar({
         <button
           onClick={() => setCollapsed(false)}
           className={`p-2 rounded-lg mb-4 transition-colors ${isDarkMode ? "hover:bg-gray-800 text-gray-400" : "hover:bg-gray-200 text-gray-600"}`}
-          title="Ouvrir le panneau"
+          title={t("chatSidebar.openPanel")}
         >
           <PanelLeft size={20} />
         </button>
         <button
           onClick={onNewConversation}
           className="p-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-          title="Nouvelle conversation"
+          title={t("chatSidebar.newConversation")}
         >
           <Plus size={20} />
         </button>
@@ -128,20 +130,20 @@ export default function ChatSidebar({
       {/* Header */}
       <div className={`flex items-center justify-between p-4 border-b ${isDarkMode ? "border-gray-700" : "border-gray-200"}`}>
         <h2 className={`text-sm font-semibold ${isDarkMode ? "text-gray-200" : "text-gray-800"}`}>
-          Historique
+          {t("chatSidebar.history")}
         </h2>
         <div className="flex items-center gap-1">
           <button
             onClick={onNewConversation}
             className="p-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-            title="Nouvelle conversation"
+            title={t("chatSidebar.newConversation")}
           >
             <Plus size={16} />
           </button>
           <button
             onClick={() => setCollapsed(true)}
             className={`p-1.5 rounded-lg transition-colors ${isDarkMode ? "hover:bg-gray-800 text-gray-400" : "hover:bg-gray-200 text-gray-600"}`}
-            title="Réduire le panneau"
+            title={t("chatSidebar.collapsePanel")}
           >
             <PanelLeftClose size={16} />
           </button>
@@ -157,7 +159,7 @@ export default function ChatSidebar({
         ) : conversations.length === 0 ? (
           <div className={`text-center py-8 text-sm ${isDarkMode ? "text-gray-500" : "text-gray-400"}`}>
             <MessageSquare size={24} className="mx-auto mb-2 opacity-50" />
-            <p>Aucune conversation</p>
+            <p>{t("chatSidebar.noConversations")}</p>
           </div>
         ) : (
           Object.entries(grouped).map(([dateLabel, convs]) => (
@@ -198,7 +200,7 @@ export default function ChatSidebar({
                     </div>
                   ) : (
                     <>
-                      <span className="flex-1 truncate">{conv.title || "Sans titre"}</span>
+                      <span className="flex-1 truncate">{conv.title || t("chatSidebar.untitled")}</span>
                       <div className={`hidden group-hover:flex items-center gap-0.5 ${currentConversationId === conv.id ? "!flex" : ""}`}>
                         <button
                           onClick={(e) => handleRenameStart(conv.id, conv.title, e)}
@@ -207,7 +209,7 @@ export default function ChatSidebar({
                               ? "hover:bg-blue-700"
                               : `${isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-300"}`
                           }`}
-                          title="Renommer"
+                          title={t("chatSidebar.rename")}
                         >
                           <Pencil size={12} />
                         </button>
@@ -218,7 +220,7 @@ export default function ChatSidebar({
                               ? "hover:bg-red-500"
                               : "hover:bg-red-100 dark:hover:bg-red-900/30 text-red-500"
                           }`}
-                          title="Supprimer"
+                          title={t("chatSidebar.delete")}
                         >
                           <Trash2 size={12} />
                         </button>

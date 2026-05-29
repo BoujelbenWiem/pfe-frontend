@@ -1,8 +1,10 @@
 'use client';
 
-import {useEffect} from 'react';
+
+import { useEffect } from 'react';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
+import { useLanguage } from '@/context/language/useLanguage';
 
 interface ErrorProps {
     error: Error & { digest?: string };
@@ -10,6 +12,7 @@ interface ErrorProps {
 }
 
 export default function Error({error, reset}: ErrorProps) {
+    const {t} = useLanguage();
     useEffect(() => {
         // Log the error to an error reporting service
         console.error('Application error:', error);
@@ -37,10 +40,10 @@ export default function Error({error, reset}: ErrorProps) {
                 </div>
 
                 <div className="mt-8 space-y-6">
-                    <h2 className="text-3xl font-bold">Something Went Wrong</h2>
+                    <h2 className="text-3xl font-bold">{t('error.title')}</h2>
 
                     <p className="text-lg opacity-80">
-                        We apologize for the inconvenience. An unexpected error has occurred.
+                        {t('error.description')}
                     </p>
 
                     <div className="flex flex-wrap justify-center gap-4 mt-8">
@@ -48,14 +51,14 @@ export default function Error({error, reset}: ErrorProps) {
                             onClick={() => reset()}
                             size="lg"
                         >
-                            Try Again
+                            {t('error.tryAgain')}
                         </Button>
                         <Link href="/">
                             <Button
                                 variant="outline"
                                 size="lg"
                             >
-                                Return Home
+                                {t('notFound.returnHome')}
                             </Button>
                         </Link>
                     </div>
@@ -63,7 +66,7 @@ export default function Error({error, reset}: ErrorProps) {
 
                 {error.digest && (
                     <p className="mt-8 text-sm opacity-60">
-                        Error ID: {error.digest}
+                        {t('error.errorId')}: {error.digest}
                     </p>
                 )}
             </div>
