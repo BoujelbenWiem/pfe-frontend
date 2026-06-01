@@ -92,7 +92,7 @@ export default function ChangePasswordSection({}: ChangePasswordProps) {
         <button
           type="submit"
           disabled={passwordSaving}
-          className="bg-blue-600 text-white rounded-xl px-3 py-1.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-40 transition"
+          className="bg-primary text-white rounded-xl px-3 py-1.5 text-sm font-medium hover:bg-primary-hover disabled:opacity-40 transition"
         >
           {passwordSaving ? t("profile.changePassword.changing") : t("profile.changePassword.button")}
         </button>

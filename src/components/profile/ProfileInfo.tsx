@@ -84,7 +84,7 @@ export default function ProfileInfo({ user }: ProfileInfoProps) {
         <button
           type="submit"
           disabled={profileSaving}
-          className="bg-blue-600 text-white rounded-xl px-3 py-1.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-40 transition"
+          className="bg-primary text-white rounded-xl px-3 py-1.5 text-sm font-medium hover:bg-primary-hover disabled:opacity-40 transition"
         >
           {profileSaving ? t("profile.info.saving") : t("profile.info.saveButton")}
         </button>

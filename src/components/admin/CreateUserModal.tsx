@@ -144,11 +144,10 @@ export default function CreateUserModal({
                   }`}
                 >
                   <option value="">{t("modal.selectRole")}</option>
-                  {ROLES.map((role) => (
-                    <option key={role} value={role}>
-                      {t(`dashboard.${role.toLowerCase()}`) || role}
-                    </option>
-                  ))}
+                  <option value="STORE_MANAGER">{t("dashboard.storeManager")}</option>
+                  <option value="MARKETING">{t("dashboard.marketing")}</option>
+                  <option value="CRM">{t("dashboard.crm")}</option>
+                  <option value="PURCHASES">{t("dashboard.purchases")}</option>
                 </select>
                 {errors.role && (
                   <p className="mt-1 text-sm text-red-500">

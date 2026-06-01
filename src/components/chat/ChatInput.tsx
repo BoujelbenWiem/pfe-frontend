@@ -41,7 +41,7 @@ export default function ChatInput({ onSend, loading }: Props) {
       <button
         onClick={handleSend}
         disabled={!value.trim() || loading}
-        className="bg-blue-600 text-white rounded-xl px-3 py-1.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-40 transition flex-shrink-0"
+        className="bg-primary text-white rounded-xl px-3 py-1.5 text-sm font-medium hover:bg-primary-hover disabled:opacity-40 transition flex-shrink-0"
       >
         {loading ? "…" : t("chat.send")}
       </button>

@@ -120,6 +120,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
       style={{
         backgroundColor: isDarkMode ? "rgba(17, 24, 39, 0.95)" : "rgba(255, 255, 255, 0.95)",
         borderColor: isDarkMode ? "rgba(75, 85, 99, 0.5)" : "rgba(229, 231, 235, 0.5)",
+        padding: "1rem 3.2rem 1rem 3.8rem",
       }}
     >
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
@@ -130,25 +131,25 @@ export default function Navbar({ className = "" }: NavbarProps) {
             className="flex items-center space-x-2 group"
             onClick={() => setIsMobileMenuOpen(false)}
           >
+            
             <Image 
-              src="/logo.png" 
+              src="/logo_bv.png" 
               alt="BV Logo" 
-              width={40} 
-              height={40}
-              className="dark:hidden rounded-lg"
+              width={140} 
+              height={69}
+              className="dark:hidden rounded-md"
               priority
+              
             />
             <Image 
-              src="/logo-dark.png" 
+              src="/logo_bv.png" 
               alt="BV Logo" 
-              width={40} 
-              height={40}
-              className="hidden dark:block rounded-lg"
+              width={140} 
+              height={69}
+              className="hidden dark:block rounded-md"
               priority
             />
-            <span className={`text-xl font-bold ${isDarkMode ? "text-white" : "text-gray-900"}`}>
-              ChatBot
-            </span>
+            
           </Link>
 
           {/* Desktop Navigation */}
@@ -159,7 +160,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
                 href={link.href}
                 className={`px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 ${
                   isActive(link.href)
-                    ? "bg-blue-600 text-white shadow-md"
+                    ? "bg-primary text-white shadow-md"
                     : `${isDarkMode ? "text-gray-300 hover:bg-gray-800" : "text-gray-700 hover:bg-gray-100"}`
                 }`}
               >

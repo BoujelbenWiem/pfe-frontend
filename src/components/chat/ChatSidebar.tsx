@@ -116,7 +116,7 @@ export default function ChatSidebar({
         </button>
         <button
           onClick={onNewConversation}
-          className="p-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+          className="p-2 rounded-lg bg-primary text-white hover:bg-primary-hover transition-colors"
           title={t("chatSidebar.newConversation")}
         >
           <Plus size={20} />
@@ -135,7 +135,7 @@ export default function ChatSidebar({
         <div className="flex items-center gap-1">
           <button
             onClick={onNewConversation}
-            className="p-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+            className="p-1.5 rounded-lg bg-primary text-white hover:bg-primary-hover transition-colors"
             title={t("chatSidebar.newConversation")}
           >
             <Plus size={16} />
@@ -154,7 +154,7 @@ export default function ChatSidebar({
       <div className="flex-1 overflow-y-auto py-2 px-2 space-y-1">
         {loading ? (
           <div className="flex items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>
           </div>
         ) : conversations.length === 0 ? (
           <div className={`text-center py-8 text-sm ${isDarkMode ? "text-gray-500" : "text-gray-400"}`}>
@@ -173,13 +173,13 @@ export default function ChatSidebar({
                   onClick={() => onSelectConversation(conv.id)}
                   className={`group flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all text-sm ${
                     currentConversationId === conv.id
-                      ? "bg-blue-600 text-white"
+                      ? "bg-primary text-white"
                       : `${isDarkMode ? "text-gray-300 hover:bg-gray-800" : "text-gray-700 hover:bg-gray-200"}`
                   }`}
                 >
                   <MessageSquare size={14} className="flex-shrink-0" />
                   {editingId === conv.id ? (
-                    <div className="flex-1 flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex-1 flex items-center gap-1  " onClick={(e) => e.stopPropagation()}>
                       <input
                         type="text"
                         value={editTitle}
@@ -206,7 +206,7 @@ export default function ChatSidebar({
                           onClick={(e) => handleRenameStart(conv.id, conv.title, e)}
                           className={`p-1 rounded transition-colors ${
                             currentConversationId === conv.id
-                              ? "hover:bg-blue-700"
+                              ? "hover:bg-primary-hover"
                               : `${isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-300"}`
                           }`}
                           title={t("chatSidebar.rename")}
