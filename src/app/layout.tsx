@@ -8,7 +8,6 @@ import Header from "@/components/sections/Header";
 import Footer from "@/components/sections/Footer";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
-import LiquidEther from '@/components/LiquidEther';
 
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -40,11 +39,7 @@ export default function RootLayout({
               <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
                 <Header />
                 <main className="flex-1 pt-4 pb-4 min-h-[calc(100vh-16rem)]">
-                  <LiquidEther 
-          className="fixed inset-0 -z-10"
-          autoDemo={true}
-          colors={['#5227FF', '#FF9FFC', '#B497CF']}
-        />{children}
+                  {children}
         </main>
                 <Footer />
               </div>
